@@ -9,7 +9,7 @@ import { getConfig } from "./config";
 
 const onRedirectCallback = (appState) => {
   history.push(
-    appState && appState.returnTo ? appState.returnTo : window.location.pathname
+    appState && appState.returnTo ? appState.returnTo : "/sn-embeddable"
   );
 };
 
@@ -20,7 +20,7 @@ const providerConfig = {
   clientId: config.clientId,
   onRedirectCallback,
   authorizationParams: {
-    redirect_uri: window.location.origin,
+    redirect_uri: window.location.origin + "/sn-embeddable",
     ...(config.audience ? { audience: config.audience } : null),
   },
 };
