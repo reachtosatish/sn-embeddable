@@ -1,4 +1,5 @@
 {
-  "domain": "YOUR_AUTH0_DOMAIN.auth0.com",
-  "clientId": "YOUR_AUTH0_CLIENT_ID"
+  "domain": "dev-i5d2w8udtwvk610e.ca.auth0.com",
+  "clientId": "8a2VSLApUg77lc275rjLyhW3ZMgVbakq",
+  "audience": ""
 }
