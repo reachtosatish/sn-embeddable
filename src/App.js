@@ -26,7 +26,7 @@ const App = () => {
   }
 
   return (
-    <Router history={history}>
+    <Router history={history} basename="/sn-embeddable">
       <div id="app" className="d-flex flex-column h-100">
         <NavBar />
         <Container className="flex-grow-1 mt-5">
