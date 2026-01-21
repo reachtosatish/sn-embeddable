@@ -88,36 +88,7 @@ const SNEmbed = () => {
         await login();
 
         // Request the case list embeddable
-        await getEmbeddables(["sn-embedx-case-list"]);
-
-        listEl = document.querySelector("sn-embedx-case-list");
-
-        const eventHandlers = {
-          "SN_EMBEDX_CASE_LIST#COMPONENT_READY": (e) => {
-            console.info("SN_EMBEDX_CASE_LIST#COMPONENT_READY");
-            if (!cancelled) setInitialized(true);
-          },
-          "SN_EMBEDX_CASE_LIST#COMPONENT_ERROR": (e) => {
-            const { errorMessage } = e.detail.payload || {};
-            console.error("SN_EMBEDX_CASE_LIST#COMPONENT_ERROR", errorMessage);
-            if (!cancelled) setInitError(new Error(errorMessage || "Component error"));
-          },
-          "SN_EMBEDX_CASE_LIST#ROW_CLICKED": (e) => {
-            const { record_sys_id, table } = e.detail.payload || {};
-            if (record_sys_id && table) {
-              const url = `/caseview?emb_table=${table}&emb_recordid=${record_sys_id}`;
-              window.location.href = url;
-            }
-          },
-        };
-
-        if (listEl && typeof setEventsFn === "function") {
-          try {
-            setEventsFn(listEl, eventHandlers);
-          } catch (err) {
-            console.warn("Failed to set ServiceNow embeddable events", err);
-          }
-        }
+        await getEmbeddables(["sn-embedx-catalog-item-form"]);
 
         if (!cancelled) setInitialized(true);
       } catch (err) {
@@ -143,19 +114,24 @@ const SNEmbed = () => {
   }, [isAuthenticated, getTokenCallBack]);
 
   if (initError) return <div>Failed to load ServiceNow embeddables: {initError.message}</div>;
-  if (isLoading || loading || !initialized) return <Loading />;
+  if (isLoading || loading) return <Loading />;
 
   return (
     <div className="sn-embed-page">
       <h2>ServiceNow Web Embeddables</h2>
+      
+      {!initialized && <p>Initializing ServiceNow embeddables...</p>}
 
-      <sn-embedx-case-list
-        table="sn_customerservice_case"
-        limit="20"
-        list-title="List of Cases"
-        query="state=10"
-        columns="number,short_description,sys_updated_on,state">
-      </sn-embedx-case-list>
+     <sn-embedx-catalog-item-form
+	sys-id="38d0ee659c2eba148e74828912e97e86"
+	confirmation-text="Request submitted successfully!"
+	confirmation-sub-text="Estimated resolution in 24 hours"
+	reference-number-label="Reference Number :"
+	primary-button-label="View details"
+	secondary-button-label="Browse services">
+</sn-embedx-catalog-item-form>
+      
+      {initialized && <p style={{marginTop: '10px', color: 'green'}}>✓ Component loaded successfully</p>}
     </div>
   );
 };
